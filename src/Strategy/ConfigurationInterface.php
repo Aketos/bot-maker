@@ -1,6 +1,6 @@
 <?php
 
-namespace BotMaker\Strategy\Model;
+namespace BotMaker\Strategy;
 
 interface ConfigurationInterface
 {

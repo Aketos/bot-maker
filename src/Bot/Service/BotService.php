@@ -10,6 +10,8 @@ class BotService implements BotServiceInterface
     /** @var StrategyInterface[] */
     protected array $strategies;
 
+    protected array $enabledStrategies = [];
+
     protected bool $active;
 
     public function __construct(array $strategies)
@@ -19,15 +21,25 @@ class BotService implements BotServiceInterface
 
     protected function initialize()
     {
+        // get user config
         /** @var StrategyInterface $strategy */
         foreach ($this->getStrategies() as $strategy) {
+            $strategy->enable(/** true if strategy is selected in user config */);
+        }
+
+        /** @var StrategyInterface $strategy */
+        foreach ($this->getEnabledStrategies() as $strategy) {
             $strategy->initialize();
         }
 
-        foreach ($this->getStrategies() as $strategy) {
+        foreach ($this->getEnabledStrategies() as $strategy) {
             if (!$strategy->isReady()) {
                 return false;
             }
+        }
+
+        if ($this->getEnabledStrategies() === []) {
+            return false;
         }
 
         return true;
@@ -41,7 +53,7 @@ class BotService implements BotServiceInterface
 
         while ($this->isAStrategyRunning()) {
             /** @var StrategyInterface $strategy */
-            foreach ($this->getStrategies() as $strategy) {
+            foreach ($this->getEnabledStrategies() as $strategy) {
                 if ($strategy->isActive()) {
                     $strategy->process();
                 }
@@ -65,6 +77,23 @@ class BotService implements BotServiceInterface
     }
 
     /**
+     * @return StrategyInterface[]
+     */
+    public function getEnabledStrategies(): array
+    {
+        if ($this->enabledStrategies === []) {
+            $this->enabledStrategies = array_filter(
+                $this->getStrategies(),
+                static function (StrategyInterface $strategy) {
+                    return $strategy->isEnabled();
+                }
+            );
+        }
+
+        return $this->enabledStrategies;
+    }
+
+    /**
      * @throws BotException
      */
     public function getStrategyForClass(string $strategyClass): StrategyInterface
@@ -81,7 +110,7 @@ class BotService implements BotServiceInterface
 
     public function isAStrategyRunning(): bool
     {
-        foreach ($this->getStrategies() as $strategy) {
+        foreach ($this->getEnabledStrategies() as $strategy) {
             if ($strategy->isActive()) {
                 return true;
             }

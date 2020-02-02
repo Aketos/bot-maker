@@ -11,4 +11,8 @@ interface StrategyInterface
     public function isReady(): bool;
 
     public function isActive(): bool;
+
+    public function isEnabled(): bool;
+
+    public function enable(bool $enable = false);
 }

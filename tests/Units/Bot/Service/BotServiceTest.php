@@ -28,6 +28,8 @@ class BotServiceTest extends TestCase
             ->willReturn(true);
         $strategyMock->method('isActive')
             ->willReturn(false);
+        $strategyMock->method('isEnabled')
+            ->willReturn(true);
 
         $bot = new BotService([$strategyMock]);
 

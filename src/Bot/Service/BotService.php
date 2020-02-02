@@ -1,26 +1,54 @@
 <?php
 
-namespace BotMaker\Strategy\Service;
+namespace BotMaker\Bot\Service;
 
-use BotMaker\Strategy\Exception\BotException;
+use BotMaker\Bot\Exception\BotException;
 use BotMaker\Strategy\StrategyInterface;
-use BotMaker\Client\Service\ClientServiceInterface;
 
 class BotService implements BotServiceInterface
 {
     /** @var StrategyInterface[] */
     protected array $strategies;
 
-    protected ClientServiceInterface $client;
+    protected bool $active;
 
-    public function __construct(ClientServiceInterface $client, array $strategies)
+    public function __construct(array $strategies)
     {
-
+        $this->strategies = $strategies;
     }
 
-    public function start()
+    protected function initialize()
     {
+        /** @var StrategyInterface $strategy */
+        foreach ($this->getStrategies() as $strategy) {
+            $strategy->initialize();
+        }
 
+        foreach ($this->getStrategies() as $strategy) {
+            if (!$strategy->isReady()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function start(): ?bool
+    {
+        if (!$this->initialize()) {
+            return false;
+        }
+
+        while ($this->isAStrategyRunning()) {
+            /** @var StrategyInterface $strategy */
+            foreach ($this->getStrategies() as $strategy) {
+                if ($strategy->isActive()) {
+                    $strategy->process();
+                }
+            }
+        }
+
+        return true;
     }
 
     public function stop()
@@ -28,11 +56,9 @@ class BotService implements BotServiceInterface
 
     }
 
-    public function getClient(): ClientServiceInterface
-    {
-        return $this->client;
-    }
-
+    /**
+     * @return StrategyInterface[]
+     */
     public function getStrategies(): array
     {
         return $this->strategies;
@@ -45,11 +71,22 @@ class BotService implements BotServiceInterface
     {
         /** @var StrategyInterface $strategy */
         foreach ($this->strategies as $strategy) {
-            if ($strategy->getName() === $strategyClass) {
+            if (get_class($strategy) === $strategyClass) {
                 return $strategy;
             }
         }
 
         throw new BotException('Unable to find the requested strategy');
+    }
+
+    public function isAStrategyRunning(): bool
+    {
+        foreach ($this->getStrategies() as $strategy) {
+            if ($strategy->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

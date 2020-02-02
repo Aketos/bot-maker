@@ -1,6 +1,6 @@
 <?php
 
-namespace BotMaker\Strategy\Exception;
+namespace BotMaker\Bot\Exception;
 
 use Exception;
 

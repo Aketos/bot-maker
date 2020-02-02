@@ -2,24 +2,20 @@
 
 namespace BotMaker\Client;
 
+use BotMaker\Bot\Model\Order;
+use BotMaker\Bot\Model\Pair;
+
 interface TradingInterface
 {
-
-    public function createOrder(Order $order);
+    /**
+     * Create an order at market current price
+     */
+    public function createOrder(Order $order): Order;
 
     /**
-     * Create a buy order at market current price
+     * Create an order at a specific price
      */
-    public function buy(Pair $pair, float $quantity);
+    public function createLimitOrder(Order $order): Order;
 
-    /**
-     * Create a sell order at market current price
-     */
-    public function sell(Pair $pair, float $quantity);
-
-    /**
-     * Create a limit order at market current price
-     */
-    public function createLimitOrder();
-
+    public function fetchPrice(Pair $pair);
 }

@@ -13,7 +13,7 @@ class BotServiceTest extends TestCase
     {
     }
 
-    public function testStart()
+    public function testStart(): void
     {
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
         $strategyMock->method('isReady')
@@ -34,7 +34,7 @@ class BotServiceTest extends TestCase
         $this->assertTrue($bot->start());
     }
 
-    public function testGetStrategies()
+    public function testGetStrategies(): void
     {
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
@@ -44,7 +44,7 @@ class BotServiceTest extends TestCase
         $this->assertInstanceOf(StrategyInterface::class, $bot->getStrategies()[0]);
     }
 
-    public function testGetStrategyForClassSuccess()
+    public function testGetStrategyForClassSuccess(): void
     {
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
@@ -53,7 +53,7 @@ class BotServiceTest extends TestCase
         $this->assertEquals($strategyMock, $bot->getStrategyForClass(get_class($strategyMock)));
     }
 
-    public function testGetStrategyForClassFailure()
+    public function testGetStrategyForClassFailure(): void
     {
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 

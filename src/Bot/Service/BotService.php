@@ -1,9 +1,9 @@
 <?php
 
-namespace BotMaker\Bot\Service;
+namespace BotMaker\Strategy\Service;
 
-use BotMaker\Bot\Exception\BotException;
-use BotMaker\Bot\StrategyInterface;
+use BotMaker\Strategy\Exception\BotException;
+use BotMaker\Strategy\StrategyInterface;
 use BotMaker\Client\Service\ClientServiceInterface;
 
 class BotService implements BotServiceInterface

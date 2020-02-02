@@ -2,8 +2,8 @@
 
 namespace BotMaker\Client;
 
-use BotMaker\Bot\Model\Order;
-use BotMaker\Bot\Model\Pair;
+use BotMaker\Strategy\Model\Order;
+use BotMaker\Strategy\Model\Pair;
 
 interface TradingInterface
 {

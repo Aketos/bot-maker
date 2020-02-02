@@ -1,6 +1,6 @@
 <?php
 
-namespace BotMaker\Bot\Model;
+namespace BotMaker\Strategy\Model;
 
 class Order
 {

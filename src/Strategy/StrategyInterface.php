@@ -1,6 +1,6 @@
 <?php
 
-namespace BotMaker\Bot;
+namespace BotMaker\Strategy;
 
 interface StrategyInterface
 {

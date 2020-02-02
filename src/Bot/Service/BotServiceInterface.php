@@ -1,17 +1,17 @@
 <?php
 
 
-namespace BotMaker\Bot\Service;
+namespace BotMaker\Strategy\Service;
 
 
-use BotMaker\Bot\StrategyInterface;
+use BotMaker\Strategy\StrategyInterface;
 use BotMaker\Client\Service\ClientServiceInterface;
 
 interface BotServiceInterface
 {
-    public function start(): bool;
+    public function start();
 
-    public function stop(): bool;
+    public function stop();
 
     public function getClient(): ClientServiceInterface;
 

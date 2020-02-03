@@ -2,6 +2,7 @@
 
 namespace BotMaker;
 
+use BotMaker\BotBundle\DependencyInjection\Compiler\BotServiceBuilderPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -28,6 +29,11 @@ class Kernel extends BaseKernel
     public function getProjectDir(): string
     {
         return \dirname(__DIR__);
+    }
+
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new BotServiceBuilderPass());
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void

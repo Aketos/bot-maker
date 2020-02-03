@@ -4,5 +4,5 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    BotMaker\StrategyBundle\Service\GridTradingStrategy: ~
+    BotMaker\StrategyBundle\Service\GridTradingStrategy:
         tags: ['trading.strategy']

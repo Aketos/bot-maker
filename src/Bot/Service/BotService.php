@@ -19,7 +19,7 @@ class BotService implements BotServiceInterface
         $this->strategies = $strategies;
     }
 
-    protected function initialize()
+    protected function initialize(): bool
     {
         // get user config
         /** @var StrategyInterface $strategy */
@@ -38,11 +38,7 @@ class BotService implements BotServiceInterface
             }
         }
 
-        if ($this->getEnabledStrategies() === []) {
-            return false;
-        }
-
-        return true;
+        return !($this->getEnabledStrategies() === []);
     }
 
     public function start(): ?bool

@@ -6,7 +6,7 @@ interface StrategyInterface
 {
     public function initialize(): bool;
 
-    public function process();
+    public function process(): void;
 
     public function isReady(): bool;
 
@@ -14,5 +14,6 @@ interface StrategyInterface
 
     public function isEnabled(): bool;
 
-    public function enable(bool $enable = false);
+    public function enable(): void;
+    public function disable(): void;
 }

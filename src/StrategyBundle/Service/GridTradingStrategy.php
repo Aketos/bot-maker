@@ -2,16 +2,15 @@
 
 namespace BotMaker\StrategyBundle\Service;
 
-use BotMaker\StrategyBundle\StrategyInterface;
-
-class GridTradingStrategy implements StrategyInterface
+class GridTradingStrategy extends BaseStrategy
 {
+
     public function initialize(): bool
     {
         // TODO: Implement initialize() method.
     }
 
-    public function process()
+    public function process(): void
     {
         // TODO: Implement process() method.
     }
@@ -24,15 +23,5 @@ class GridTradingStrategy implements StrategyInterface
     public function isActive(): bool
     {
         // TODO: Implement isActive() method.
-    }
-
-    public function isEnabled(): bool
-    {
-        // TODO: Implement isEnabled() method.
-    }
-
-    public function enable(bool $enable = false)
-    {
-        // TODO: Implement enable() method.
     }
 }

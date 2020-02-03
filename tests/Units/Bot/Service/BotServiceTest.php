@@ -4,7 +4,7 @@ namespace BotMaker\Tests\Units\Bot\Service;
 
 use BotMaker\Bot\Service\BotService;
 use BotMaker\Bot\Exception\BotException;
-use BotMaker\Strategy\StrategyInterface;
+use BotMaker\StrategyBundle\StrategyInterface;
 use PHPUnit\Framework\TestCase;
 
 class BotServiceTest extends TestCase

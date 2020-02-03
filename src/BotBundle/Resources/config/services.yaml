@@ -1,0 +1,3 @@
+services:
+  BotMaker\BotBundle\Service\BotServiceInterface:
+      class: BotMaker\BotBundle\Service\BotService

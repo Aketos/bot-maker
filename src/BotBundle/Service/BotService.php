@@ -3,6 +3,7 @@
 namespace BotMaker\BotBundle\Service;
 
 use BotMaker\BotBundle\Exception\BotException;
+use BotMaker\ClientBundle\TradingInterface;
 use BotMaker\StrategyBundle\StrategyInterface;
 use BotMaker\UserBundle\Service\UserService;
 
@@ -11,15 +12,19 @@ class BotService implements BotServiceInterface
     /** @var StrategyInterface[] */
     protected array $strategies;
 
+    /** @var TradingInterface[] */
+    protected array $clients;
+
     protected UserService $userService;
 
     protected array $enabledStrategies = [];
 
     protected bool $active;
 
-    public function __construct(UserService $userService, array $strategies)
+    public function __construct(UserService $userService, array $strategies, array $clients)
     {
         $this->strategies = $strategies;
+        $this->clients = $clients;
         $this->userService = $userService;
     }
 

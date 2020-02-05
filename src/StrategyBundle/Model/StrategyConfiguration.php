@@ -9,8 +9,5 @@ use BotMaker\StrategyBundle\StrategyConfigurationInterface;
 
 class StrategyConfiguration implements StrategyConfigurationInterface
 {
-    public function getRules(): array
-    {
-        // TODO: Implement getRules() method.
-    }
+
 }

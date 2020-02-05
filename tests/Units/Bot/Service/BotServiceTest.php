@@ -2,10 +2,11 @@
 
 namespace BotMaker\Tests\Units\Bot\Service;
 
-use BotMaker\Bot\Service\BotService;
-use BotMaker\Bot\Exception\BotException;
+use BotMaker\BotBundle\Exception\BotException;
+use BotMaker\BotBundle\Service\BotService;
 use BotMaker\StrategyBundle\StrategyInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class BotServiceTest extends TestCase
 {
@@ -57,12 +58,13 @@ class BotServiceTest extends TestCase
 
     public function testGetStrategyForClassFailure(): void
     {
+        $this->expectException(BotException::class);
+        $this->expectExceptionMessage('Unable to find the requested strategy');
+
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
         $bot = new BotService([$strategyMock]);
 
-        $this->expectException(BotException::class);
-        $this->expectExceptionMessage('Unable to find the requested strategy');
         $bot->getStrategyForClass(self::class);
     }
 }

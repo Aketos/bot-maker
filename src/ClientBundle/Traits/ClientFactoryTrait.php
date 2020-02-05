@@ -14,5 +14,4 @@ trait ClientFactoryTrait
             'allow_redirects' => false,
         ]);
     }
-
 }

@@ -2,24 +2,16 @@
 
 namespace BotMaker\StrategyBundle\Service;
 
+use BotMaker\UserBundle\Model\User;
+
 class GridTradingStrategy extends BaseStrategy
 {
+    public const NAME = 'GridTrading';
 
-    /* Configuration to define
-     * -----------------------------------------------------------------------
-     *  pairAToken: Token to trade (ex: VET)
-     *  pairABalance: Amount of token to trade (ex: 1000)
-     *  pairBToken: Token used as market (includes fiat - USD)
-     *  pairBBalance: Max price to set on grid
-     *  minPriceExpected: Min value of the grid
-     *  maxPriceExpected: Max value of the grid
-     *  orderSize: Number of tokens to trade per order
-     *  grids: Number of grids
-     */
-
-    public function initialize(): bool
+    public function initialize(User $user): bool
     {
-        // TODO: Implement initialize() method.
+        parent::initialize($user);
+
     }
 
     public function process(): void

@@ -2,9 +2,11 @@
 
 namespace BotMaker\StrategyBundle;
 
+use BotMaker\UserBundle\Model\User;
+
 interface StrategyInterface
 {
-    public function initialize(): bool;
+    public function initialize(User $user): bool;
 
     public function process(): void;
 
@@ -15,5 +17,8 @@ interface StrategyInterface
     public function isEnabled(): bool;
 
     public function enable(): void;
+
     public function disable(): void;
+
+    public function getName(): string;
 }

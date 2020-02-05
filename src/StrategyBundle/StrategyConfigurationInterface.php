@@ -2,7 +2,7 @@
 
 namespace BotMaker\StrategyBundle;
 
-interface ConfigurationInterface
+interface StrategyConfigurationInterface
 {
     public function getRules(): array;
 }

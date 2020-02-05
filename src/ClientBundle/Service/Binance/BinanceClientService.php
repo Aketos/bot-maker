@@ -2,23 +2,17 @@
 
 namespace BotMaker\ClientBundle\Service\Binance;
 
-use BotMaker\ClientBundle\TradingInterface;
-use BotMaker\ClientBundle\Traits\ClientFactoryTrait;
+use BotMaker\ClientBundle\Service\BaseClient;
 use BotMaker\StrategyBundle\Model\Order;
 use BotMaker\StrategyBundle\Model\Pair;
-use GuzzleHttp\Client;
 
-class BinanceClientService implements TradingInterface
+class BinanceClientService extends BaseClient
 {
-    use ClientFactoryTrait;
-
-    protected const BASE_URI = 'https://api.binance.com';
-
-    protected Client $client;
+   protected const BASE_URI = 'https://api.binance.com';
 
     public function __construct()
     {
-        $this->client = $this->createClient();
+        parent::__construct();
     }
 
     /**

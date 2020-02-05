@@ -4,32 +4,30 @@ namespace BotMaker\BotBundle\Service;
 
 use BotMaker\BotBundle\Exception\BotException;
 use BotMaker\StrategyBundle\StrategyInterface;
+use BotMaker\UserBundle\Service\UserService;
 
 class BotService implements BotServiceInterface
 {
     /** @var StrategyInterface[] */
     protected array $strategies;
 
+    protected UserService $userService;
+
     protected array $enabledStrategies = [];
 
     protected bool $active;
 
-    public function __construct(array $strategies)
+    public function __construct(UserService $userService, array $strategies)
     {
         $this->strategies = $strategies;
+        $this->userService = $userService;
     }
 
     protected function initialize(): bool
     {
-        // get user config
         /** @var StrategyInterface $strategy */
         foreach ($this->getStrategies() as $strategy) {
-            $strategy->enable(/** true if strategy is selected in user config */);
-        }
-
-        /** @var StrategyInterface $strategy */
-        foreach ($this->getEnabledStrategies() as $strategy) {
-            $strategy->initialize();
+            $strategy->initialize($this->userService->getUserById());
         }
 
         foreach ($this->getEnabledStrategies() as $strategy) {

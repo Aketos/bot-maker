@@ -5,8 +5,8 @@ namespace BotMaker\Tests\Units\Bot\Service;
 use BotMaker\BotBundle\Exception\BotException;
 use BotMaker\BotBundle\Service\BotService;
 use BotMaker\StrategyBundle\StrategyInterface;
+use BotMaker\UserBundle\Service\UserService;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class BotServiceTest extends TestCase
 {
@@ -16,11 +16,12 @@ class BotServiceTest extends TestCase
 
     public function testStart(): void
     {
+        $userServiceMock = $this->getMockBuilder(UserService::class)->getMock();
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
         $strategyMock->method('isReady')
             ->willReturn(false);
 
-        $bot = new BotService([$strategyMock]);
+        $bot = new BotService($userServiceMock, [$strategyMock]);
 
         $this->assertFalse($bot->start());
 
@@ -32,16 +33,17 @@ class BotServiceTest extends TestCase
         $strategyMock->method('isEnabled')
             ->willReturn(true);
 
-        $bot = new BotService([$strategyMock]);
+        $bot = new BotService($userServiceMock, [$strategyMock]);
 
         $this->assertTrue($bot->start());
     }
 
     public function testGetStrategies(): void
     {
+        $userServiceMock = $this->getMockBuilder(UserService::class)->getMock();
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
-        $bot = new BotService([$strategyMock]);
+        $bot = new BotService($userServiceMock, [$strategyMock]);
 
         $this->assertCount(1, $bot->getStrategies());
         $this->assertInstanceOf(StrategyInterface::class, $bot->getStrategies()[0]);
@@ -49,9 +51,10 @@ class BotServiceTest extends TestCase
 
     public function testGetStrategyForClassSuccess(): void
     {
+        $userServiceMock = $this->getMockBuilder(UserService::class)->getMock();
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
-        $bot = new BotService([$strategyMock]);
+        $bot = new BotService($userServiceMock, [$strategyMock]);
 
         $this->assertEquals($strategyMock, $bot->getStrategyForClass(get_class($strategyMock)));
     }
@@ -61,9 +64,10 @@ class BotServiceTest extends TestCase
         $this->expectException(BotException::class);
         $this->expectExceptionMessage('Unable to find the requested strategy');
 
+        $userServiceMock = $this->getMockBuilder(UserService::class)->getMock();
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
 
-        $bot = new BotService([$strategyMock]);
+        $bot = new BotService($userServiceMock, [$strategyMock]);
 
         $bot->getStrategyForClass(self::class);
     }

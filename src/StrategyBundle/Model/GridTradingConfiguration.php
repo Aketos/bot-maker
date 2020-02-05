@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BotMaker\StrategyBundle\Model;
 
-class GridTradingConfiguration
+class GridTradingConfiguration extends StrategyConfiguration
 {
     /* Configuration to define: GridTradingConfiguration
  * -----------------------------------------------------------------------

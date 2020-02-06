@@ -91,7 +91,7 @@ class BotService implements BotServiceInterface
         return $this->enabledStrategies;
     }
 
-    public function setEnabledStrategies(): array
+    public function setEnabledStrategies(): BotService
     {
         $enabledStrategies = array_filter(
             $this->getStrategies(),
@@ -104,6 +104,8 @@ class BotService implements BotServiceInterface
         foreach ($enabledStrategies as $enabledStrategy) {
             $this->enabledStrategies[$enabledStrategy->getClientName()] = $enabledStrategy;
         }
+
+        return $this;
     }
 
     /**

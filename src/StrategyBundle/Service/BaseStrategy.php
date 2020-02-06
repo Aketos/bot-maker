@@ -16,11 +16,13 @@ abstract class BaseStrategy implements StrategyInterface
     protected const NAME = 'Unkown';
 
     private bool $enabled = false;
+    private string $clientName = '';
     private StrategyConfiguration $configuration;
 
     public function initialize(User $user): bool
     {
         $this->configuration = $this->createConfiguration($this->getName(), $user->getConfiguration($this->getName()));
+        $this->setClientName($this->getConfiguration()->getClientName());
     }
 
     public function isEnabled(): bool
@@ -46,6 +48,24 @@ abstract class BaseStrategy implements StrategyInterface
     protected function getConfiguration(): StrategyConfiguration
     {
         return $this->configuration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientName(): string
+    {
+        return $this->clientName;
+    }
+
+    /**
+     * @param string $clientName
+     * @return BaseStrategy
+     */
+    public function setClientName(string $clientName): BaseStrategy
+    {
+        $this->clientName = $clientName;
+        return $this;
     }
 
     abstract public function process(): void;

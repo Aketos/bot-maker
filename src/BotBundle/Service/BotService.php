@@ -3,6 +3,7 @@
 namespace BotMaker\BotBundle\Service;
 
 use BotMaker\BotBundle\Exception\BotException;
+use BotMaker\ClientBundle\Model\TradingExecution;
 use BotMaker\ClientBundle\TradingInterface;
 use BotMaker\StrategyBundle\StrategyInterface;
 use BotMaker\UserBundle\Service\UserService;
@@ -54,7 +55,10 @@ class BotService implements BotServiceInterface
             /** @var StrategyInterface $strategy */
             foreach ($this->getEnabledStrategies() as $strategy) {
                 if ($strategy->isActive()) {
-                    $strategy->process();
+                    /** @var TradingExecution $tradingExecution */
+                    foreach ($strategy->process() as $tradingExecution) {
+
+                    }
                 }
             }
         }
@@ -81,15 +85,25 @@ class BotService implements BotServiceInterface
     public function getEnabledStrategies(): array
     {
         if ($this->enabledStrategies === []) {
-            $this->enabledStrategies = array_filter(
-                $this->getStrategies(),
-                static function (StrategyInterface $strategy) {
-                    return $strategy->isEnabled();
-                }
-            );
+            $this->setEnabledStrategies();
         }
 
         return $this->enabledStrategies;
+    }
+
+    public function setEnabledStrategies(): array
+    {
+        $enabledStrategies = array_filter(
+            $this->getStrategies(),
+            static function (StrategyInterface $strategy) {
+                return $strategy->isEnabled();
+            }
+        );
+
+        /** @var StrategyInterface $enabledStrategy */
+        foreach ($enabledStrategies as $enabledStrategy) {
+            $this->enabledStrategies[$enabledStrategy->getClientName()] = $enabledStrategy;
+        }
     }
 
     /**
@@ -116,5 +130,10 @@ class BotService implements BotServiceInterface
         }
 
         return false;
+    }
+
+    public function getStrategyClient($sth): TradingInterface
+    {
+        //return $this->clients
     }
 }

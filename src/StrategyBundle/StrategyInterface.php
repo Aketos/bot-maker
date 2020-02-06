@@ -21,4 +21,6 @@ interface StrategyInterface
     public function disable(): void;
 
     public function getName(): string;
+
+    public function getClientName(): string;
 }

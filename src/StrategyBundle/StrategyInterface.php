@@ -6,9 +6,9 @@ use BotMaker\UserBundle\Model\User;
 
 interface StrategyInterface
 {
-    public function initialize(User $user): bool;
+    public function initialize(User $user): ?array;
 
-    public function process(): void;
+    public function process(): array;
 
     public function isReady(): bool;
 
@@ -21,6 +21,4 @@ interface StrategyInterface
     public function disable(): void;
 
     public function getName(): string;
-
-    public function getClientName(): string;
 }

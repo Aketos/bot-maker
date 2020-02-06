@@ -33,7 +33,7 @@ class BotService implements BotServiceInterface
     {
         /** @var StrategyInterface $strategy */
         foreach ($this->getStrategies() as $strategy) {
-            $strategy->initialize($this->userService->getUserById());
+            $this->process($strategy->initialize($this->userService->getUserById()));
         }
 
         foreach ($this->getEnabledStrategies() as $strategy) {
@@ -55,10 +55,7 @@ class BotService implements BotServiceInterface
             /** @var StrategyInterface $strategy */
             foreach ($this->getEnabledStrategies() as $strategy) {
                 if ($strategy->isActive()) {
-                    /** @var TradingExecution $tradingExecution */
-                    foreach ($strategy->process() as $tradingExecution) {
-
-                    }
+                    $this->process($strategy->process());
                 }
             }
         }
@@ -93,17 +90,12 @@ class BotService implements BotServiceInterface
 
     public function setEnabledStrategies(): BotService
     {
-        $enabledStrategies = array_filter(
+        $this->enabledStrategies = array_filter(
             $this->getStrategies(),
             static function (StrategyInterface $strategy) {
                 return $strategy->isEnabled();
             }
         );
-
-        /** @var StrategyInterface $enabledStrategy */
-        foreach ($enabledStrategies as $enabledStrategy) {
-            $this->enabledStrategies[$enabledStrategy->getClientName()] = $enabledStrategy;
-        }
 
         return $this;
     }
@@ -120,7 +112,7 @@ class BotService implements BotServiceInterface
             }
         }
 
-        throw new BotException('Unable to find the requested strategy');
+        throw new BotException(BotException::STRATEGY_NOT_FOUND);
     }
 
     public function isAStrategyRunning(): bool
@@ -134,8 +126,14 @@ class BotService implements BotServiceInterface
         return false;
     }
 
-    public function getStrategyClient($sth): TradingInterface
+
+    /**
+     * @param TradingExecution[] $tradingExecutions
+     */
+    public function process(array $tradingExecutions)
     {
-        //return $this->clients
+        foreach ($tradingExecutions as $tradingExecution) {
+
+        }
     }
 }

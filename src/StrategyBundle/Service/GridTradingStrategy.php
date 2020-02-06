@@ -2,8 +2,8 @@
 
 namespace BotMaker\StrategyBundle\Service;
 
+use BotMaker\ClientBundle\Model\TradingExecution;
 use BotMaker\StrategyBundle\Model\GridTradingConfiguration;
-use BotMaker\StrategyBundle\Model\StrategyConfiguration;
 use BotMaker\UserBundle\Model\User;
 
 class GridTradingStrategy extends BaseStrategy
@@ -14,16 +14,21 @@ class GridTradingStrategy extends BaseStrategy
     private float $step;
     private float $amountPerBuy;
 
-    public function initialize(User $user): bool
+    /**
+     * @param User $user
+     * @return TradingExecution[]
+     */
+    public function initialize(User $user): ?array
     {
         parent::initialize($user);
         $this->basePrice = $this->calculateBasePrice();
         $this->step = $this->calculateStepValue();
         $this->amountPerBuy = $this->calculateAmountPerBuy();
 
+        return $this->defineOrdersList();
     }
 
-    public function process(): void
+    public function process(): array
     {
         // TODO: Implement process() method.
     }
@@ -66,7 +71,7 @@ class GridTradingStrategy extends BaseStrategy
     }
 
     // Define all buys and sell orders
-    private function defineOrdersList()
+    private function defineOrdersList(): array
     {
         return array_merge($this->defineGridBuyOrders(), $this->defineGridSellOrders());
         //if ($this->areValidOrders(orders)) {
@@ -81,7 +86,7 @@ class GridTradingStrategy extends BaseStrategy
 
         for ($i = $this->getConfiguration()->getMinPriceExpected(); $i < $this->basePrice; $i += $this->step) {
             $order['quantity'] = $this->amountPerBuy;
-            $order['orderPrice'] = i;
+            $order['orderPrice'] = $i;
             $order['order'] = 'BUY';
             $buyOrders[] = $order;
         }
@@ -95,8 +100,8 @@ class GridTradingStrategy extends BaseStrategy
         $sellOrders = [];
 
         for ($i = $this->getConfiguration()->getMaxPriceExpected(); $i > $this->basePrice; $i -= $this->step) {
-            $order['quantity'] = $this->orderSize;
-            $order['orderPrice'] = i;
+            $order['quantity'] = $this->getConfiguration()->getOrderSize();
+            $order['orderPrice'] = $i;
             $order['order'] = 'SELL';
             $sellOrders[] = $order;
         }

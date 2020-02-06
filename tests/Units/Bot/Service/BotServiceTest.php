@@ -22,18 +22,24 @@ class BotServiceTest extends TestCase
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
         $strategyMock->method('isReady')
             ->willReturn(false);
+        $strategyMock->method('initialize')
+            ->willReturn([]);
 
         $bot = new BotService($userServiceMock, [$strategyMock], [$clientMock]);
 
         $this->assertFalse($bot->start());
 
         $strategyMock = $this->getMockBuilder(StrategyInterface::class)->getMock();
+        $strategyMock->method('initialize')
+            ->willReturn([]);
         $strategyMock->method('isReady')
             ->willReturn(true);
         $strategyMock->method('isActive')
             ->willReturn(false);
         $strategyMock->method('isEnabled')
             ->willReturn(true);
+        $strategyMock->method('process')
+            ->willReturn([]);
 
         $bot = new BotService($userServiceMock, [$strategyMock], [$clientMock]);
 

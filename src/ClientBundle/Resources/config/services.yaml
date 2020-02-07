@@ -6,3 +6,5 @@ services:
 
     BotMaker\ClientBundle\Service\Binance\BinanceClientService:
         tags: ['trading.client']
+
+    BotMaker\ClientBundle\Service\TradeBuilder: ~

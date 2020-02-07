@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BotMaker\StrategyBundle\Service;
 
+use BotMaker\ClientBundle\Service\TradeBuilder;
 use BotMaker\StrategyBundle\Model\StrategyConfiguration;
 use BotMaker\StrategyBundle\StrategyInterface;
 use BotMaker\StrategyBundle\Traits\ConfigurationFactoryTrait;
@@ -15,8 +16,15 @@ abstract class BaseStrategy implements StrategyInterface
 
     protected const NAME = 'Unkown';
 
+    public TradeBuilder $tradeBuilder;
+
     private bool $enabled = false;
     private StrategyConfiguration $configuration;
+
+    public function __construct(TradeBuilder $tradeBuilder)
+    {
+        $this->tradeBuilder = $tradeBuilder;
+    }
 
     public function initialize(User $user): ?array
     {

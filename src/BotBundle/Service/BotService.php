@@ -133,7 +133,13 @@ class BotService implements BotServiceInterface
     public function process(array $tradingExecutions)
     {
         foreach ($tradingExecutions as $tradingExecution) {
-
+            // get the client from $trad->clientName
+            // $client->execute($trad->argument) -- factory which dispatch from $trad->execution to right TradingInterface function
         }
+    }
+
+    protected function getClientFromName()
+    {
+
     }
 }

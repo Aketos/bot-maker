@@ -8,6 +8,7 @@ use BotMaker\StrategyBundle\Model\Pair;
 
 class BinanceClientService extends BaseClient
 {
+   public const NAME = 'Binance';
    protected const BASE_URI = 'https://api.binance.com';
 
     public function __construct()

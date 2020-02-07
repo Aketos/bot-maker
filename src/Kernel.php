@@ -3,6 +3,7 @@
 namespace BotMaker;
 
 use BotMaker\BotBundle\DependencyInjection\Compiler\BotServiceBuilderPass;
+use BotMaker\ClientBundle\DependencyInjection\Compiler\TradeBuilderPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -34,6 +35,7 @@ class Kernel extends BaseKernel
     protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new BotServiceBuilderPass());
+        $container->addCompilerPass(new TradeBuilderPass());
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void

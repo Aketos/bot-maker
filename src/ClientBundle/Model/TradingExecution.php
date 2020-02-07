@@ -16,6 +16,13 @@ class TradingExecution
     /** @var Order|Pair */
     protected $argument;
 
+    public function __construct(string $clientName, string $execution, $argument)
+    {
+        $this->clientName = $clientName;
+        $this->execution = $execution;
+        $this->argument = $argument;
+    }
+
     /**
      * @return string
      */

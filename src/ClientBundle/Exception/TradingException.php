@@ -1,6 +1,6 @@
 <?php
 
-namespace BotMaker\ClientBundle;
+namespace BotMaker\ClientBundle\Exception;
 
 use Exception;
 

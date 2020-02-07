@@ -4,6 +4,8 @@ namespace BotMaker\StrategyBundle\Service;
 
 use BotMaker\ClientBundle\Model\TradingExecution;
 use BotMaker\StrategyBundle\Model\GridTradingConfiguration;
+use BotMaker\StrategyBundle\Model\Order;
+use BotMaker\StrategyBundle\Model\Pair;
 use BotMaker\UserBundle\Model\User;
 
 class GridTradingStrategy extends BaseStrategy
@@ -61,7 +63,6 @@ class GridTradingStrategy extends BaseStrategy
     private function calculateAmountPerBuy()
     {
         return $this->calculateBasePrice() * $this->getConfiguration()->getOrderSize();
-
     }
 
     // Calculate the number of order of the same type (BUY/SELL) to generate
@@ -74,9 +75,6 @@ class GridTradingStrategy extends BaseStrategy
     private function defineOrdersList(): array
     {
         return array_merge($this->defineGridBuyOrders(), $this->defineGridSellOrders());
-        //if ($this->areValidOrders(orders)) {
-        //    return orders;
-        //}
     }
 
     // Define the list of buy orders to generate
@@ -85,10 +83,11 @@ class GridTradingStrategy extends BaseStrategy
         $buyOrders = [];
 
         for ($i = $this->getConfiguration()->getMinPriceExpected(); $i < $this->basePrice; $i += $this->step) {
-            $order['quantity'] = $this->amountPerBuy;
-            $order['orderPrice'] = $i;
-            $order['order'] = 'BUY';
-            $buyOrders[] = $order;
+            $buyOrders[] = (new Order())
+                ->setPair($this->getConfiguration()->getPairToTrade())
+                ->setPrice($i)
+                ->setType(Order::TYPE_BUY)
+                ->setQuantity($this->amountPerBuy);
         }
 
         return $buyOrders;
@@ -100,10 +99,11 @@ class GridTradingStrategy extends BaseStrategy
         $sellOrders = [];
 
         for ($i = $this->getConfiguration()->getMaxPriceExpected(); $i > $this->basePrice; $i -= $this->step) {
-            $order['quantity'] = $this->getConfiguration()->getOrderSize();
-            $order['orderPrice'] = $i;
-            $order['order'] = 'SELL';
-            $sellOrders[] = $order;
+            $sellOrders[] = (new Order())
+                ->setPair($this->getConfiguration()->getPairToTrade())
+                ->setPrice($i)
+                ->setType(Order::TYPE_SELL)
+                ->setQuantity($this->getConfiguration()->getOrderSize());
         }
 
         return $sellOrders;

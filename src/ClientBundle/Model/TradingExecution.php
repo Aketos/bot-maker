@@ -6,6 +6,7 @@ namespace BotMaker\ClientBundle\Model;
 
 use BotMaker\StrategyBundle\Model\Order;
 use BotMaker\StrategyBundle\Model\Pair;
+use BotMaker\StrategyBundle\Model\TradableInterface;
 
 class TradingExecution
 {
@@ -14,9 +15,9 @@ class TradingExecution
     protected string $execution;
 
     /** @var Order|Pair */
-    protected $argument;
+    protected  TradableInterface $argument;
 
-    public function __construct(string $clientName, string $execution, $argument)
+    public function __construct(string $clientName, string $execution, TradableInterface $argument)
     {
         $this->clientName = $clientName;
         $this->execution = $execution;

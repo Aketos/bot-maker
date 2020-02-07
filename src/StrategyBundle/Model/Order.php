@@ -2,7 +2,7 @@
 
 namespace BotMaker\StrategyBundle\Model;
 
-class Order
+class Order implements TradableInterface
 {
     public const STATUS_INI = 'Created';
     public const STATUS_SENT = 'Sent';

@@ -18,7 +18,7 @@ class TradeBuilder
         $this->clients = $clients;
     }
 
-    public function forgeTradingAction(string $action, string $clientName, $argument): TradingExecution
+    public function forgeTradingExecution(string $action, string $clientName, $argument): TradingExecution
     {
         $this->validateAction($action);
         $this->validateClientName($clientName);
@@ -30,7 +30,7 @@ class TradeBuilder
         );
     }
 
-    protected function validateAction(string $action): bool
+    protected function validateAction(string $action): void
     {
         if (!in_array($action, $this->actions, true)) {
             throw new TradingException(
@@ -42,7 +42,7 @@ class TradeBuilder
         }
     }
 
-    protected function validateClientName(string $client): bool
+    protected function validateClientName(string $client): void
     {
         if (!in_array($client, $this->clients, true)) {
             throw new TradingException(

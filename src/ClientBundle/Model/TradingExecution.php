@@ -15,7 +15,7 @@ class TradingExecution
     protected string $execution;
 
     /** @var Order|Pair */
-    protected  TradableInterface $argument;
+    protected TradableInterface $argument;
 
     public function __construct(string $clientName, string $execution, TradableInterface $argument)
     {

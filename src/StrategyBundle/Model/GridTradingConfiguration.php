@@ -28,7 +28,13 @@ class GridTradingConfiguration extends StrategyConfiguration
 
     public function __construct(array $configuration)
     {
-
+        foreach ($configuration as $parameter => $value) {
+            if ($parameter === 'Pair') {
+                $this->pairToTrade = new Pair($value['coin'], $value['marketCoin']);
+            } else {
+                $this->$parameter = $value;
+            }
+        }
     }
 
     /**

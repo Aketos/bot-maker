@@ -10,7 +10,7 @@ trait ConfigurationFactoryTrait
 {
     public function createConfiguration(string $strategyName, array $configuration): StrategyConfiguration
     {
-        $specificConfiguration = $strategyName . 'Configuration';
+        $specificConfiguration = 'BotMaker\StrategyBundle\Model\\' . $strategyName . 'Configuration';
 
         return new $specificConfiguration($configuration);
     }

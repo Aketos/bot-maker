@@ -29,7 +29,9 @@ class BinanceClientService extends BaseClient
      */
     public function createLimitOrder(Order $order): Order
     {
+        var_dump($order->getType() . ': ' . $order->getPair()->getCoin() . '/' . $order->getPair()->getMarketCoin() . ' ' . $order->getQuantity() . ' @ ' . $order->getPrice());
         // TODO: Implement createLimitOrder() method.
+        return new Order();
     }
 
     public function fetchPrice(Pair $pair)

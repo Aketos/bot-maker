@@ -29,6 +29,7 @@ abstract class BaseStrategy implements StrategyInterface
     public function initialize(User $user): ?array
     {
         $this->configuration = $this->createConfiguration($this->getName(), $user->getConfiguration($this->getName()));
+        return null;
     }
 
     public function isEnabled(): bool

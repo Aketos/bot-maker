@@ -36,7 +36,8 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        var_dump($this->bot->getStrategies()[GridTradingStrategy::class]->tradeBuilder);
+        $this->bot->start();
+        //var_dump($this->bot->getStrategies()[GridTradingStrategy::class]->tradeBuilder);
         return 0;
     }
 }

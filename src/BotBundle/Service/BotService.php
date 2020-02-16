@@ -3,6 +3,7 @@
 namespace BotMaker\BotBundle\Service;
 
 use BotMaker\BotBundle\Exception\BotException;
+use BotMaker\ClientBundle\Exception\ClientNotFoundException;
 use BotMaker\ClientBundle\Model\TradingExecution;
 use BotMaker\ClientBundle\TradingInterface;
 use BotMaker\StrategyBundle\StrategyInterface;
@@ -25,7 +26,16 @@ class BotService implements BotServiceInterface
     public function __construct(UserService $userService, array $strategies, array $clients)
     {
         $this->strategies = $strategies;
-        $this->clients = $clients;
+        $this->clients = array_combine(
+            array_map(
+                static function (TradingInterface $client) {
+                    return $client->getName();
+                },
+                $clients
+            ),
+            array_values($clients)
+        );
+
         $this->userService = $userService;
     }
 
@@ -133,13 +143,21 @@ class BotService implements BotServiceInterface
     public function process(array $tradingExecutions)
     {
         foreach ($tradingExecutions as $tradingExecution) {
-            // get the client from $trad->clientName
-            // $client->execute($trad->argument) -- factory which dispatch from $trad->execution to right TradingInterface function
+            $this->getClientFromName($tradingExecution->getClientName())->execute($tradingExecution);
         }
     }
 
-    protected function getClientFromName()
+    protected function getClientFromName(string $className): TradingInterface
     {
+        if (isset($this->clients[$className])) {
+            return $this->clients[$className];
+        }
 
+        throw new ClientNotFoundException(
+            sprintf(
+                'The client %s required is not loaded in the Bot',
+                $className
+            )
+        );
     }
 }

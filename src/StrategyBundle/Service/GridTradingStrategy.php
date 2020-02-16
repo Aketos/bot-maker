@@ -3,9 +3,11 @@
 namespace BotMaker\StrategyBundle\Service;
 
 use BotMaker\ClientBundle\Model\TradingExecution;
+use BotMaker\ClientBundle\TradingInterface;
 use BotMaker\StrategyBundle\Model\GridTradingConfiguration;
 use BotMaker\StrategyBundle\Model\Order;
 use BotMaker\StrategyBundle\Model\Pair;
+use BotMaker\StrategyBundle\Model\TradableInterface;
 use BotMaker\UserBundle\Model\User;
 
 class GridTradingStrategy extends BaseStrategy
@@ -27,7 +29,16 @@ class GridTradingStrategy extends BaseStrategy
         $this->step = $this->calculateStepValue();
         $this->amountPerBuy = $this->calculateAmountPerBuy();
 
-        return $this->defineOrdersList();
+        return array_map(
+            function (TradableInterface $tradable) {
+                return $this->tradeBuilder->forgeTradingExecution(
+                    TradingInterface::ACTION_CREATE_LIMIT_ORDER,
+                    $this->getConfiguration()->getClientName(),
+                    $tradable
+                );
+            },
+            $this->defineOrdersList()
+        );
     }
 
     public function process(): array

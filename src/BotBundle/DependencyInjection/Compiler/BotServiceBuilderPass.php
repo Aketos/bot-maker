@@ -17,7 +17,7 @@ class BotServiceBuilderPass implements CompilerPassInterface
     /**
      * @inheritDoc
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $availableStrategies = $this->collectAvailableStrategies($container);
         $availableClients = $this->collectAvailableClients($container);

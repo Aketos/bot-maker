@@ -55,7 +55,7 @@ class BotService implements BotServiceInterface
         return !($this->getEnabledStrategies() === []);
     }
 
-    public function start(): ?bool
+    public function start(): bool
     {
         if (!$this->initialize()) {
             return false;
@@ -73,9 +73,9 @@ class BotService implements BotServiceInterface
         return true;
     }
 
-    public function stop()
+    public function stop(): bool
     {
-
+        return true;
     }
 
     /**
@@ -140,7 +140,7 @@ class BotService implements BotServiceInterface
     /**
      * @param TradingExecution[] $tradingExecutions
      */
-    public function process(array $tradingExecutions)
+    public function process(array $tradingExecutions): void
     {
         foreach ($tradingExecutions as $tradingExecution) {
             $this->getClientFromName($tradingExecution->getClientName())->execute($tradingExecution);

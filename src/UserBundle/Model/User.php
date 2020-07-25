@@ -23,7 +23,7 @@ class User
             'clientName' => BinanceClientService::NAME,
             'Pair' => ['coin' => 'VET', 'marketCoin' => 'ETH'],
             'amountToTrade' => 100000,
-            'amountAsMarket' => 100,
+            //'amountAsMarket' => 100,
             'minPriceExpected' => 2.5,
             'maxPriceExpected' => 3.5,
             'orderSize' => 10000,

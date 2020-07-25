@@ -60,7 +60,7 @@ class GridTradingStrategy extends BaseStrategy
     private function calculateStepValue()
     {
         return ($this->getConfiguration()->getMaxPriceExpected() - $this->getConfiguration()->getMinPriceExpected())
-            / $this->calculateNumberOfOrders();
+            / $this->getConfiguration()->getGrids();
     }
 
     // Calculate the basic price of the token according to the range set
@@ -92,13 +92,15 @@ class GridTradingStrategy extends BaseStrategy
     private function defineGridBuyOrders(): array
     {
         $buyOrders = [];
+        $orderNumber = 0;
+        $quantity = $this->getConfiguration()->getAmountToTrade() / $this->calculateNumberOfOrders();
 
-        for ($i = $this->getConfiguration()->getMinPriceExpected(); $i < $this->basePrice; $i += $this->step) {
+        while ($orderNumber < $this->calculateNumberOfOrders()) {
             $buyOrders[] = (new Order())
                 ->setPair($this->getConfiguration()->getPairToTrade())
-                ->setPrice($i)
+                ->setPrice($this->getConfiguration()->getMinPriceExpected() + ($this->step * $orderNumber++))
                 ->setType(Order::TYPE_BUY)
-                ->setQuantity($this->amountPerBuy);
+                ->setQuantity($quantity);
         }
 
         return $buyOrders;
@@ -108,13 +110,16 @@ class GridTradingStrategy extends BaseStrategy
     private function defineGridSellOrders(): array
     {
         $sellOrders = [];
+        $quantity = $this->getConfiguration()->getAmountToTrade() / $this->calculateNumberOfOrders();
+        $orderNumber = 0;
 
-        for ($i = $this->getConfiguration()->getMaxPriceExpected(); $i > $this->basePrice; $i -= $this->step) {
+        while ($orderNumber < $this->calculateNumberOfOrders()) {
             $sellOrders[] = (new Order())
                 ->setPair($this->getConfiguration()->getPairToTrade())
-                ->setPrice($i)
+                ->setPrice($this->getConfiguration()->getMaxPriceExpected() - ($this->step * $orderNumber++))
                 ->setType(Order::TYPE_SELL)
-                ->setQuantity($this->getConfiguration()->getOrderSize());
+                ->setQuantity($quantity);
+
         }
 
         return $sellOrders;

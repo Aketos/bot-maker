@@ -6,9 +6,9 @@ use BotMaker\StrategyBundle\StrategyInterface;
 
 interface BotServiceInterface
 {
-    public function start();
+    public function start(): bool;
 
-    public function stop();
+    public function stop(): bool;
 
     public function getStrategies(): array;
 
